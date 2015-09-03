@@ -287,6 +287,19 @@
 		this.$editor.trigger('focus');
 		if (this.selection) {
 			util.restoreSelection(this.selection);
+		} else {
+			// If selection does not exist set cursor at the end of textarea (ugly and temporary solution)
+			// TODO
+			try {
+				var range = document.createRange();
+        range.selectNodeContents(this.$editor[0]);
+        range.collapse(false);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+			} catch (e) {
+				console.log(e)
+			}
 		}
 		try { util.replaceSelection($img[0]); } catch (e) {}
 		this.onChange();
